@@ -2,7 +2,9 @@ function funWrapper(fn) {
   return (req, resp, next) => {
     let result = fn(req, resp, next);
     if (result.then && result.catch) {
-      result.catch(next);
+      result
+        .then(data => resp.json(data))
+        .catch(next);
     }
   };
 }

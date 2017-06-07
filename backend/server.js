@@ -13,17 +13,24 @@ app.use(bodyParser.json());
 let api = Api(app);
 
 api.post('/api/login', (req, resp) =>
-  bcrypt.compare(req.body.password, config.masterPassword)
+  // clean up expired sessions while we are at it
+  db.none(`delete from login_session where expires < now()`)
+  .then(() =>
+    bcrypt.compare(
+      req.body.password,
+      config.masterPassword)
+  )
   .then(match => {
     if (match) {
       let token = uuid.v4();
       return db.one(`
         insert into login_session
-        values ($1) returning *`, token)
-        .then(data => resp.json(data));
+        values ($1, default) returning *`, token);
     } else {
       resp.status(403);
-      resp.json('Login failed');
+      return {
+        error: 'Login failed'
+      };
     }
   })
 );
@@ -41,7 +48,7 @@ app.use(function authentication(req, resp, next) {
     unauthorized(resp);
     return;
   }
-  db.oneOrNone('select * from login_session where token = $1', token)
+  db.oneOrNone('select * from login_session where token = $1 and expires >= now()', token)
     .then(token => {
       console.log('Token', token);
       if (token) {
@@ -59,7 +66,6 @@ api.get('/api/friends', (req, resp) =>
     first_name,
     last_name
     from friend`)
-    .then(friends => resp.json(friends))
 );
 
 api.get('/api/friend/:id', (req, resp) =>
@@ -67,10 +73,12 @@ api.get('/api/friend/:id', (req, resp) =>
   req.params.id)
   .then(friend => {
     if (friend) {
-      resp.json(friend);
+      return friend;
     } else {
       resp.status(404);
-      resp.json({ error: `Friend ${req.params.id} not found`});
+      return {
+        error: `Friend ${req.params.id} not found`}
+      ;
     }
   })
 );
@@ -88,7 +96,6 @@ api.post('/api/friends', (req, resp) =>
       $(note)
     )
     returning *`, req.body)
-    .then(data => resp.json(data))
 );
 
 api.put('/api/friend/:id', (req, resp) =>
@@ -105,7 +112,6 @@ api.put('/api/friend/:id', (req, resp) =>
     Object.assign({
       id: req.params.id
     }, req.body))
-    .then(data => resp.json(data))
 );
 
 app.use(function errorHandler(err, req, resp, next) {

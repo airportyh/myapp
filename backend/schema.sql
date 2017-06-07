@@ -22,5 +22,6 @@ CREATE TABLE note (
 );
 
 CREATE TABLE login_session (
-  token varchar PRIMARY KEY
+  token varchar PRIMARY KEY,
+  expires timestamp DEFAULT now() + interval '30 days'
 );
