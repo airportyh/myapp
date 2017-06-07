@@ -10,6 +10,7 @@ co(function *() {
   let databasePassword = yield prompt.password('Database password (Optional): ');
   let password = yield prompt.password('Password: ');
   let encrypted = yield bcrypt.hash(password, 10);
+  let cors = (yield prompt('Support CORS?(Y/N) ')).toLowerCase() === 'y';
   let contents = {
     port: port,
     database: {
@@ -17,11 +18,13 @@ co(function *() {
       user: databaseUser || undefined,
       password: databasePassword || undefined
     },
-    masterPassword: encrypted
+    masterPassword: encrypted,
+    cors: cors
   };
   let filename = 'config.json';
   yield fs.writeFile(filename,
     JSON.stringify(contents, null, '  '));
   console.log(`Wrote ${filename}.`);
+  prompt.finish();
 })
 .catch(err => console.log(err.stack));

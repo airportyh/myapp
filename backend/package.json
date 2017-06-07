@@ -13,6 +13,7 @@
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "co": "^4.6.0",
+    "cors": "^2.8.3",
     "express": "^4.15.3",
     "fs-promise": "^2.0.3",
     "pg-promise": "^5.9.0",

@@ -6,8 +6,12 @@ const Api = require('./api');
 const db = pgp(config.database);
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
+const cors = require('cors');
 
 const app = express();
+if (config.cors) {
+  app.use(cors());
+}
 app.use(bodyParser.json());
 
 let api = Api(app);
