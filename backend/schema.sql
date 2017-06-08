@@ -1,15 +1,4 @@
-
-CREATE TABLE friend (
-  id serial PRIMARY KEY,
-  first_name varchar,
-  last_name varchar,
-  email varchar,
-  phone varchar,
-  company varchar,
-  note varchar
-);
-
-CREATE TABLE note_category (
+CREATE TABLE category (
   id serial PRIMARY KEY,
   title varchar,
   name varchar
@@ -17,8 +6,13 @@ CREATE TABLE note_category (
 
 CREATE TABLE note (
   id serial PRIMARY KEY,
-  text varchar,
-  category_id integer references note_category (id)
+  title varchar,
+  text varchar
+);
+
+CREATE TABLE belongs_to_category (
+  category_id integer NOT NULL REFERENCES category (id),
+  note_id integer NOT NULL REFERENCES note (id)
 );
 
 CREATE TABLE login_session (

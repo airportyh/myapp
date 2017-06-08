@@ -64,20 +64,19 @@ app.use(function authentication(req, resp, next) {
     .catch(next);
 });
 
-api.get('/api/friends', (req, resp) =>
+api.get('/api/notes', (req, resp) =>
   db.any(`select
     id,
-    first_name,
-    last_name
-    from friend`)
+    title
+    from note`)
 );
 
-api.get('/api/friend/:id', (req, resp) =>
-  db.oneOrNone('select * from friend where id = $1',
+api.get('/api/note/:id', (req, resp) =>
+  db.oneOrNone('select * from note where id = $1',
   req.params.id)
-  .then(friend => {
-    if (friend) {
-      return friend;
+  .then(note => {
+    if (note) {
+      return note;
     } else {
       resp.status(404);
       return {
@@ -87,30 +86,22 @@ api.get('/api/friend/:id', (req, resp) =>
   })
 );
 
-api.post('/api/friends', (req, resp) =>
+api.post('/api/notes', (req, resp) =>
   db.one(`
-    insert into friend values
+    insert into note values
     (
       default,
-      $(first_name),
-      $(last_name),
-      $(email),
-      $(phone),
-      $(company),
-      $(note)
+      $(title),
+      $(text)
     )
     returning *`, req.body)
 );
 
-api.put('/api/friend/:id', (req, resp) =>
+api.put('/api/note/:id', (req, resp) =>
   db.one(`
-    update friend set
-      first_name = $(first_name),
-      last_name = $(last_name),
-      email = $(email),
-      phone = $(phone),
-      company = $(company),
-      note = $(note)
+    update note set
+      title = $(title),
+      text = $(text)
     where id = $(id)
     returning *`,
     Object.assign({
@@ -127,5 +118,5 @@ app.use(function errorHandler(err, req, resp, next) {
   });
 });
 
-app.listen(config.port || 3000,
-  () => console.log('Listening on port 3000.'));
+let port = config.port || 3000
+app.listen(port, () => console.log(`Listening on port ${port}.`));
