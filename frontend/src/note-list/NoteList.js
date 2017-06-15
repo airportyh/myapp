@@ -34,7 +34,7 @@ class NoteList extends React.Component {
           {this.props.notes.map(note =>
             <li key={note.id}>
               <Link to={`/note/${note.id}`}>
-                {note.title}
+                {note.title ? note.title : <span className="info">Untitled</span> }
               </Link>
             </li>
           )}

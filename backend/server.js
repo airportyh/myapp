@@ -72,6 +72,18 @@ api.get('/api/notes', (req, resp) =>
     from note`)
 );
 
+api.get('/api/note/search', (req, resp) => {
+  console.log('q', req.query.q);
+  return db.any(`
+  select
+  	*
+  from
+  	note
+  where
+  	to_tsvector(title || ' ' || text) @@ to_tsquery($1)
+  `, `'${req.query.q}'`)
+});
+
 api.get('/api/note/:id', (req, resp) =>
   db.oneOrNone('select * from note where id = $1',
   req.params.id)

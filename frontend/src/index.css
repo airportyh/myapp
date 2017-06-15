@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+.info {
+  color: #aaa;
+}
+
 * {
   box-sizing: border-box;
 }

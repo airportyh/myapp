@@ -19,3 +19,5 @@ CREATE TABLE login_session (
   token varchar PRIMARY KEY,
   expires timestamp DEFAULT now() + interval '30 days'
 );
+
+CREATE INDEX search_notes_idx ON note USING GIN (to_tsvector('english', title || ' ' || text));
