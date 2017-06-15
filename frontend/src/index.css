@@ -3,3 +3,105 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+  border-bottom: 1px solid gray;
+  padding: 10px;
+  margin: 0;
+  overflow: auto;
+}
+
+.content {
+  padding: 20px;
+}
+
+input[type=text],
+input[type=password],
+button,
+label,
+textarea {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+}
+
+input[type=text],
+input[type=password],
+button,
+textarea {
+  border: 1px solid black;
+  display: block;
+  width: 100%;
+}
+
+h1 button {
+  display: inline-block;
+  width: inherit;
+  float: right;
+  font-size: 1em;
+  margin: 0;
+  padding: 0 0.3em 0.2em 0.3em;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.notes li {
+  list-style: none;
+  display: block;
+  margin: 0;
+}
+
+ul.notes li a {
+  text-decoration: none;
+  display: block;
+  color: black;
+  padding: 0.8em;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.2em;
+}
+
+ul.notes li:active {
+  background-color: darkblue;
+}
+
+ul.notes li:active a {
+  color: #fff;
+}
+
+div.note {
+  position: relative;
+  height: 100vh;
+}
+
+div.note a {
+  position: absolute;
+  display: block;
+  height: 3%;
+}
+
+div.note input[type=text] {
+  margin: 0;
+  position: absolute;
+  top: 3%;
+  height: 8%;
+  text-align: center;
+}
+
+div.note textarea {
+  padding: 0.5em;
+  font-family: Inconsolata, Monaco, monospace;
+  margin: 0;
+  position: absolute;
+  top: 11%;
+  height: 89%;
+  width: 100%;
+  font-size: 1em;
+}

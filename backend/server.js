@@ -16,9 +16,10 @@ app.use(bodyParser.json());
 
 let api = Api(app);
 
-api.post('/api/login', (req, resp) =>
+api.post('/api/login', (req, resp) => {
+  console.log('body', req.body);
   // clean up expired sessions while we are at it
-  db.none(`delete from login_session where expires < now()`)
+  return db.none(`delete from login_session where expires < now()`)
   .then(() =>
     bcrypt.compare(
       req.body.password,
@@ -37,12 +38,12 @@ api.post('/api/login', (req, resp) =>
       };
     }
   })
-);
+});
 
 function unauthorized(resp) {
   resp.status(403);
   resp.json({
-    error: 'Unautherized'
+    error: 'Unauthorized'
   });
 }
 

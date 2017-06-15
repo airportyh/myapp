@@ -1,12 +1,12 @@
 const INITIAL_STATE = {
-  friends: []
+  notes: []
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
-  if (action.type === 'friends') {
+  if (action.type === 'notes') {
     return {
       ...state,
-      friends: action.friends
+      notes: action.payload
     };
   }
   return state;

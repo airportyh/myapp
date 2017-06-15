@@ -1,18 +1,28 @@
-import baseURL from '../baseURL';
+import api from '../api';
 
-export function login(password) {
-  return fetch(`${baseURL}/api/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      password: password
-    })
-  })
-  .then(resp => resp.json())
-  .then(info => ({
+function error(err) {
+  return {
+    type: 'error',
+    error: err.message
+  };
+}
+
+function loginSuccess(info) {
+  return {
     type: 'login-success',
     info: info
-  }));
+  };
+}
+
+export function login(password, history) {
+  return function(dispatch) {
+    api.post(`/api/login`, null, {
+      password: password
+    })
+    .then(info => {
+      dispatch(loginSuccess(info));
+      history.push('/notes');
+    })
+    .catch(err => dispatch(error(err)));
+  };
 }

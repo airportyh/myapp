@@ -5,26 +5,29 @@ import './index.css';
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import ReduxPromise from 'redux-promise';
+import ReduxThunk from 'redux-thunk';
 import 'whatwg-fetch';
 import * as ReduxPersist from 'redux-persist';
 
 // Import components
 import LoginComponent from './login/Login';
 import loginReducer from './login/Login.reducer';
-import FriendsComponent from './friends/Friends';
-import friendsReducer from './friends/Friends.reducer';
+import NoteListComponent from './note-list/NoteList';
+import noteListReducer from './note-list/NoteList.reducer';
+import NoteComponent from './note/Note';
+import noteReducer from './note/Note.reducer';
 
 const reducer = Redux.combineReducers({
   login: loginReducer,
-  friends: friendsReducer
+  noteList: noteListReducer,
+  note: noteReducer
 });
 
 const store = Redux.createStore(
   reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   Redux.compose(
-    Redux.applyMiddleware(ReduxPromise),
+    Redux.applyMiddleware(ReduxThunk),
     ReduxPersist.autoRehydrate()
   )
 );
@@ -38,16 +41,10 @@ ReactDOM.render(
   <ReactRedux.Provider store={store}>
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/friends">Friends</Link></li>
-          </ul>
-        </nav>
         <Route exact path="/" component={HomeComponent}/>
         <Route path="/login" component={LoginComponent}/>
-        <Route path="/friends"
-        component={FriendsComponent}/>
+        <Route path="/notes" component={NoteListComponent}/>
+        <Route path="/note/:id" component={NoteComponent}/>
       </div>
     </Router>
   </ReactRedux.Provider>
