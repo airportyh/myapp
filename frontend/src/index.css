@@ -26,6 +26,7 @@ h1 {
 
 input[type=text],
 input[type=password],
+input[type=search],
 button,
 label,
 textarea {
@@ -35,11 +36,17 @@ textarea {
 
 input[type=text],
 input[type=password],
+input[type=search],
 button,
 textarea {
   border: 1px solid black;
   display: block;
   width: 100%;
+}
+
+input[type=search] {
+  font-size: 1.2em;
+  padding: 0.5em;
 }
 
 h1 button {

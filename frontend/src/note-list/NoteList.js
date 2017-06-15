@@ -21,6 +21,10 @@ class NoteList extends React.Component {
       this.props.authToken,
       this.props.history);
   }
+  changeQ(q) {
+    this.props.changeQ(q);
+    setTimeout(() => this.props.search(q, this.props.authToken));
+  }
   render() {
     return (
       <div>
@@ -30,6 +34,9 @@ class NoteList extends React.Component {
             +
           </button>
         </h1>
+        <input type="search" placeholder="Search"
+          value={this.props.q}
+          onChange={event => this.changeQ(event.target.value)}/>
         <ul className="notes">
           {this.props.notes.map(note =>
             <li key={note.id}>

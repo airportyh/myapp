@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
-  notes: []
+  notes: [],
+  q: 'blah'
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -7,6 +8,11 @@ export default function reducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       notes: action.payload
+    };
+  } else if (action.type === 'change-q') {
+    return {
+      ...state,
+      q: action.value
     };
   }
   return state;
