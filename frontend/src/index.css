@@ -137,6 +137,7 @@ div.note textarea {
   background-color: red;
   position: absolute;
   right: 0;
+  top: 0;
 }
 
 .pull-right {
