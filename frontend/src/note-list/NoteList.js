@@ -6,14 +6,7 @@ import { Link } from 'react-router-dom';
 class NoteList extends React.Component {
   componentDidMount() {
     if (this.props.authToken) {
-      console.log('fetching from mount');
-      this.props.fetchNoteList(this.props.authToken);
-    }
-  }
-  componentWillReceiveProps(newProps) {
-    if (newProps.authToken !== this.props.authToken) {
-      console.log('fetching from receive');
-      this.props.fetchNoteList(newProps.authToken);
+      this.props.search(this.props.q, this.props.authToken);
     }
   }
   addNote() {
@@ -28,12 +21,12 @@ class NoteList extends React.Component {
   render() {
     return (
       <div>
-        <h1>
-          Notes
+        <div className="header">
           <button onClick={() => this.addNote()}>
             +
           </button>
-        </h1>
+          <h1>Notes</h1>
+        </div>
         <input type="search" placeholder="Search"
           value={this.props.q}
           onChange={event => this.changeQ(event.target.value)}/>
@@ -53,8 +46,8 @@ class NoteList extends React.Component {
 
 const NoteListContainer = ReactRedux.connect(
   state => ({
-    authToken: state.login.token,
-    ...state.noteList
+    ...state.noteList,
+    authToken: state.login.token
   }),
   actions
 )(NoteList);

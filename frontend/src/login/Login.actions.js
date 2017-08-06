@@ -1,4 +1,5 @@
 import api from '../api';
+import cookies from 'js-cookie';
 
 function error(err) {
   return {
@@ -7,10 +8,10 @@ function error(err) {
   };
 }
 
-function loginSuccess(info) {
+function loginToken(info) {
   return {
-    type: 'login-success',
-    info: info
+    type: 'login-token',
+    token: info.token
   };
 }
 
@@ -20,7 +21,8 @@ export function login(password, history) {
       password: password
     })
     .then(info => {
-      dispatch(loginSuccess(info));
+      cookies.set('authToken', info.token);
+      dispatch(loginToken(info));
       history.push('/notes');
     })
     .catch(err => dispatch(error(err)));

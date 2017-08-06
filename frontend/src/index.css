@@ -14,7 +14,6 @@ body {
 
 h1 {
   text-align: center;
-  border-bottom: 1px solid gray;
   padding: 10px;
   margin: 0;
   overflow: auto;
@@ -47,9 +46,15 @@ textarea {
 input[type=search] {
   font-size: 1.2em;
   padding: 0.5em;
+  margin: 0;
 }
 
-h1 button {
+.header h1 {
+  padding: 0;
+  margin: 0;
+}
+
+.header button {
   display: inline-block;
   width: inherit;
   float: right;
@@ -87,23 +92,28 @@ ul.notes li:active a {
   color: #fff;
 }
 
+.link {
+  padding: 5px;
+}
+
 div.note {
   position: relative;
   height: 100vh;
 }
 
 div.note a {
-  position: absolute;
   display: block;
-  height: 3%;
+  height: 5%;
+  padding: 7px;
 }
 
 div.note input[type=text] {
   margin: 0;
   position: absolute;
-  top: 3%;
-  height: 8%;
+  top: 5%;
+  height: 6%;
   text-align: center;
+  font-size: 1.5em;
 }
 
 div.note textarea {
@@ -115,4 +125,20 @@ div.note textarea {
   height: 89%;
   width: 100%;
   font-size: 1em;
+}
+
+.error {
+  color: red;
+}
+
+.dirty {
+  height: 5px;
+  width: 100%;
+  background-color: red;
+  position: absolute;
+  right: 0;
+}
+
+.pull-right {
+  float: right;
 }

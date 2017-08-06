@@ -14,6 +14,7 @@ class Login extends React.Component {
         <h1>Log In</h1>
         <form className="login content" onSubmit={event => this.submit(event)}>
           <div>
+            <div className="error">{this.props.error}</div>
             <label>What's the password?</label><br/>
             <input type="password"
               ref={input => this.password = input}/>
@@ -26,7 +27,7 @@ class Login extends React.Component {
 }
 
 const LoginContainer = ReactRedux.connect(
-  null,
+  state => state.login,
   actions
 )(Login);
 

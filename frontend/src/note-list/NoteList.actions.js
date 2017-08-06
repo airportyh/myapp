@@ -1,5 +1,4 @@
 import api from '../api';
-import { BrowserRouter } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 
 function error(err) {

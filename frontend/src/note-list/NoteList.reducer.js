@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   notes: [],
-  q: 'blah'
+  q: ''
 };
 
 export default function reducer(state = INITIAL_STATE, action) {

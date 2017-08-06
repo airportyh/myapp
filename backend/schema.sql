@@ -7,7 +7,9 @@ CREATE TABLE category (
 CREATE TABLE note (
   id serial PRIMARY KEY,
   title varchar,
-  text varchar
+  text varchar,
+  modified_time timestamp DEFAULT now(),
+  created_time timestamp DEFAULT now()
 );
 
 CREATE TABLE belongs_to_category (

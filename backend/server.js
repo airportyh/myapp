@@ -75,7 +75,7 @@ api.get('/api/notes', (req, resp) =>
 api.get('/api/notes/search', (req, resp) => {
   console.log('q', req.query.q);
   if (!req.query.q) {
-    return db.any('select id, title from note');
+    return db.any('select id, title from note order by modified_time desc');
   } else {
     return db.any(`
       select
@@ -84,6 +84,7 @@ api.get('/api/notes/search', (req, resp) => {
       	note
       where
       	to_tsvector(title || ' ' || text) @@ to_tsquery($1)
+      order by modified_time desc
       `, `'${req.query.q}'`);
   }
 });
@@ -109,7 +110,9 @@ api.post('/api/notes', (req, resp) =>
     (
       default,
       $(title),
-      $(text)
+      $(text),
+      default,
+      default
     )
     returning *`, req.body)
 );
@@ -118,12 +121,17 @@ api.put('/api/note/:id', (req, resp) =>
   db.one(`
     update note set
       title = $(title),
-      text = $(text)
+      text = $(text),
+      modified_time = now()
     where id = $(id)
     returning *`,
     Object.assign({
       id: req.params.id
     }, req.body))
+);
+
+api.delete('/api/note/:id', (req, resp) =>
+  db.one(`delete from note where id = ${req.params.id} returning *`)
 );
 
 app.use(function errorHandler(err, req, resp, next) {

@@ -38,7 +38,8 @@ function error(err) {
   };
 }
 
-const realUpdateNote = debounce((note, token, history, dispatch) => {
+const realUpdateNote = debounce((getState, token, history, dispatch) => {
+  let note = getState().note.note;
   return api.put('/api/note/' + note.id, token, note)
     .then(data => {
       dispatch(setNote(data));
@@ -47,7 +48,17 @@ const realUpdateNote = debounce((note, token, history, dispatch) => {
 }, 500);
 
 export function updateNote(note, token, history) {
-  return function(dispatch) {
-    realUpdateNote(note, token, history, dispatch);
+  return function(dispatch, getState) {
+    realUpdateNote(getState, token, history, dispatch);
+  };
+}
+
+export function deleteNote() {
+  return function(dispatch, getState) {
+    let state = getState();
+    let note = state.note.note;
+    let token = state.login.token;
+    api.delete(`/api/note/${note.id}`, token)
+      .catch(err => dispatch(error(err)));
   };
 }

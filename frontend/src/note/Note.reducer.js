@@ -12,7 +12,8 @@ export default function reducer(state = INITIAL_STATE, action) {
   if (action.type === 'note') {
     return {
       ...state,
-      note: action.payload
+      note: action.payload,
+      dirty: false
     };
   } else if (action.type === 'set-edit-mode') {
     return {

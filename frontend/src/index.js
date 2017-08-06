@@ -7,7 +7,7 @@ import * as ReactRedux from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ReduxThunk from 'redux-thunk';
 import 'whatwg-fetch';
-import * as ReduxPersist from 'redux-persist';
+import cookies from 'js-cookie';
 
 // Import components
 import LoginComponent from './login/Login';
@@ -16,6 +16,7 @@ import NoteListComponent from './note-list/NoteList';
 import noteListReducer from './note-list/NoteList.reducer';
 import NoteComponent from './note/Note';
 import noteReducer from './note/Note.reducer';
+import HomeComponent from './home/Home';
 
 const reducer = Redux.combineReducers({
   login: loginReducer,
@@ -27,15 +28,14 @@ const store = Redux.createStore(
   reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   Redux.compose(
-    Redux.applyMiddleware(ReduxThunk),
-    ReduxPersist.autoRehydrate()
+    Redux.applyMiddleware(ReduxThunk)
   )
 );
 
-ReduxPersist.persistStore(store);
-
-const HomeComponent = () =>
-  <h1>Home</h1>;
+store.dispatch({
+  type: 'login-token',
+  token: cookies.get('authToken')
+});
 
 ReactDOM.render(
   <ReactRedux.Provider store={store}>

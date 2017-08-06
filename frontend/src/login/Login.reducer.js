@@ -3,11 +3,18 @@ const INITIAL_STATE = {
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
-  if (action.type === 'login-success') {
-    return {
-      ...state,
-      token: action.info.token
-    };
+  switch (action.type) {
+    case 'login-token':
+      return {
+        ...state,
+        token: action.token
+      };
+    case 'error':
+      return {
+        ...state,
+        error: action.error
+      };
+    default:
+      return state;
   }
-  return state;
 }
