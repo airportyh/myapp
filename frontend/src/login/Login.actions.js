@@ -15,7 +15,7 @@ function loginToken(info) {
   };
 }
 
-export function login(password, history) {
+export function login(password, redirectTo, history) {
   return function(dispatch) {
     api.post(`/api/login`, null, {
       password: password
@@ -23,7 +23,7 @@ export function login(password, history) {
     .then(info => {
       cookies.set('authToken', info.token);
       dispatch(loginToken(info));
-      history.push('/notes');
+      history.push(redirectTo || '/');
     })
     .catch(err => dispatch(error(err)));
   };

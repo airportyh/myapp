@@ -3,6 +3,7 @@ import * as ReactRedux from 'react-redux';
 import * as actions from './Note.actions';
 import { Link } from 'react-router-dom';
 import { Form, TextField, TextArea } from '../form';
+import cookies from 'js-cookie';
 
 class Note extends React.Component {
   componentDidMount() {
@@ -22,7 +23,7 @@ class Note extends React.Component {
     return (
       <div className="note">
         <a href="#" className="pull-right" onClick={() => this.deleteNote()}>Delete</a>
-        <Link className="link" to="/notes">Back</Link>
+        <Link className="link" to="/">Back</Link>
         {dirty ? <div className="dirty"></div> : null}
         <Form values={note} onChange={values => this.updateNote(values)}>
           <TextField label="Title" propName="title"/>

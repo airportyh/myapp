@@ -2,9 +2,15 @@ import React from 'react';
 import * as ReactRedux from 'react-redux';
 import * as actions from './NoteList.actions';
 import { Link } from 'react-router-dom';
+import cookies from 'js-cookie';
 
 class NoteList extends React.Component {
   componentDidMount() {
+    let authToken = cookies.get('authToken');
+    if (!authToken) {
+      this.props.history.push('/login');
+      return;
+    }
     if (this.props.authToken) {
       this.props.search(this.props.q, this.props.authToken);
     }

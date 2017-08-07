@@ -4,7 +4,7 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import ReduxThunk from 'redux-thunk';
 import 'whatwg-fetch';
 import cookies from 'js-cookie';
@@ -16,7 +16,6 @@ import NoteListComponent from './note-list/NoteList';
 import noteListReducer from './note-list/NoteList.reducer';
 import NoteComponent from './note/Note';
 import noteReducer from './note/Note.reducer';
-import HomeComponent from './home/Home';
 
 const reducer = Redux.combineReducers({
   login: loginReducer,
@@ -37,14 +36,26 @@ store.dispatch({
   token: cookies.get('authToken')
 });
 
+const ProtectRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
+    cookies.get('authToken') ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+);
+
 ReactDOM.render(
   <ReactRedux.Provider store={store}>
     <Router>
       <div>
-        <Route exact path="/" component={HomeComponent}/>
+        <ProtectRoute exact path="/" component={NoteListComponent}/>
         <Route path="/login" component={LoginComponent}/>
-        <Route path="/notes" component={NoteListComponent}/>
-        <Route path="/note/:id" component={NoteComponent}/>
+        <ProtectRoute path="/note/:id" component={NoteComponent}/>
       </div>
     </Router>
   </ReactRedux.Provider>

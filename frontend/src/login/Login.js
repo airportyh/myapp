@@ -6,7 +6,9 @@ import { Form, PasswordField, SubmitButton } from '../form';
 class Login extends React.Component {
   submit(values) {
     let password = values.password;
-    this.props.login(password, this.props.history);
+    let from = this.props.location.state.from.pathname;
+    console.log('from', from);
+    this.props.login(password, from, this.props.history);
   }
   render() {
     return (
