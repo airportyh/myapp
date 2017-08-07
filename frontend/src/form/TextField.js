@@ -9,6 +9,7 @@ class TextField extends React.Component {
     let firePropChange = this.context.firePropChange;
     return (
       <input
+        className={this.props.className}
         type="text"
         value={values[propName]}
         onChange={event => firePropChange(propName, event.target.value)}/>

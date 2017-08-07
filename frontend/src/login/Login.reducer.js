@@ -1,5 +1,7 @@
 const INITIAL_STATE = {
-  token: null
+  token: null,
+  error: '',
+  message: ''
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -14,6 +16,8 @@ export default function reducer(state = INITIAL_STATE, action) {
         ...state,
         error: action.error
       };
+    case 'message':
+      return { ...state, message: action.message };
     default:
       return state;
   }

@@ -10,6 +10,7 @@ class PasswordField extends React.Component {
     let value = values[propName] || '';
     return (
       <input
+        className={this.props.className}
         type="password"
         value={value}
         onChange={event => firePropChange(propName, event.target.value)}/>

@@ -17,6 +17,7 @@ function loginToken(info) {
 
 export function login(password, redirectTo, history) {
   return function(dispatch) {
+    dispatch({ type: 'message', message: 'Dispatching' });
     api.post(`/api/login`, null, {
       password: password
     })

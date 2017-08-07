@@ -20,13 +20,14 @@ class NoteList extends React.Component {
     return (
       <div>
         <div className="header">
-          <button onClick={() => this.addNote()}>
+          <button className="add-button" onClick={() => this.addNote()}>
             +
           </button>
           <h1>Notes</h1>
         </div>
-        <input type="search" placeholder="Search"
+        <input type="text" placeholder="Search"
           value={this.props.q}
+          className="search-field"
           onChange={event => this.changeQ(event.target.value)}/>
         { this.props.error ? <div className="error">{this.props.error}</div> : null }
         <ul className="notes">

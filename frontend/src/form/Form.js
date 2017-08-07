@@ -35,7 +35,9 @@ class Form extends React.Component {
 
   render() {
     return (
-      <form onSubmit={event => this.submit(event)}>
+      <form
+        className={this.props.className}
+        onSubmit={event => this.submit(event)}>
         {this.props.children}
       </form>
     )

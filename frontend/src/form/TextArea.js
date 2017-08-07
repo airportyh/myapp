@@ -9,6 +9,7 @@ class TextArea extends React.Component {
     let firePropChange = this.context.firePropChange;
     return (
       <textarea
+        className={this.props.className}
         value={values[propName]}
         onChange={event => firePropChange(propName, event.target.value)}/>
     );

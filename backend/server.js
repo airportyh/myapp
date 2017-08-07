@@ -14,6 +14,11 @@ if (config.cors) {
 }
 app.use(bodyParser.json());
 
+app.use(function(req, resp, next) {
+  console.log(req.method, req.path);
+  next();
+});
+
 let api = Api(app);
 
 api.post('/api/login', (req, resp) => {
@@ -151,5 +156,5 @@ app.use(function errorHandler(err, req, resp, next) {
   });
 });
 
-let port = config.port || 3000
-app.listen(port, () => console.log(`Listening on port ${port}.`));
+let port = config.port || 3000;
+app.listen(port, () => console.log(`Listening on ${port}.`));
