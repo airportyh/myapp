@@ -4,31 +4,20 @@ const INITIAL_STATE = {
     text: ''
   },
   editing: false,
-  dirty: false,
-  intervalTimerId: null
+  pendingCount: 0
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
-  if (action.type === 'note') {
-    return {
-      ...state,
-      note: action.payload,
-      dirty: false
-    };
-  } else if (action.type === 'set-edit-mode') {
-    return {
-      ...state,
-      editing: true
-    };
-  } else if (action.type === 'change') {
-    return {
-      ...state,
-      note: {
-        ...state.note,
-        [action.prop]: action.value
-      },
-      dirty: true
-    };
+  switch (action.type) {
+    case 'note':
+      return { ...state, note: action.payload };
+    case 'push-update':
+      return { ...state, pendingCount: state.pendingCount + 1 };
+    case 'pop-update':
+      return { ...state, pendingCount: state.pendingCount - 1, dirty: false };
+    case 'dirty':
+      return { ...state, dirty: true };
+    default:
+      return state;
   }
-  return state;
 }

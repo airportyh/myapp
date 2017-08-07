@@ -1,5 +1,4 @@
 import React from 'react';
-import * as ReactRedux from 'react-redux';
 import cookies from 'js-cookie';
 
 class Home extends React.Component {

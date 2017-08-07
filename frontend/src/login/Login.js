@@ -1,26 +1,25 @@
 import React from 'react';
 import * as ReactRedux from 'react-redux';
 import * as actions from './Login.actions';
+import { Form, PasswordField, SubmitButton } from '../form';
 
 class Login extends React.Component {
-  submit(event) {
-    event.preventDefault();
-    let password = this.password.value;
+  submit(values) {
+    let password = values.password;
     this.props.login(password, this.props.history);
   }
   render() {
     return (
       <div>
         <h1>Log In</h1>
-        <form className="login content" onSubmit={event => this.submit(event)}>
+        <Form onSubmit={values => this.submit(values)}>
+          <div className="error">{this.props.error}</div>
           <div>
-            <div className="error">{this.props.error}</div>
-            <label>What's the password?</label><br/>
-            <input type="password"
-              ref={input => this.password = input}/>
+            <label>What is the password?</label><br/>
+            <PasswordField label="What is the password?" propName="password"/>
           </div>
-          <button type="submit">Enter</button>
-        </form>
+          <SubmitButton>Enter</SubmitButton>
+        </Form>
       </div>
     );
   }

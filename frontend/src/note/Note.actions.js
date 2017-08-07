@@ -1,8 +1,10 @@
 import api from '../api';
 import debounce from 'lodash.debounce';
 
-export function fetchNote(id, token) {
-  return function(dispatch) {
+export function fetchNote(id) {
+  return function(dispatch, getState) {
+    let state = getState();
+    let token = state.login.token;
     api.get(`/api/note/${id}`, token)
       .then(data => dispatch(setNote(data)))
       .catch(err => dispatch(error(err)));
@@ -16,21 +18,6 @@ export function setNote(note) {
   };
 }
 
-export function setEditMode(value) {
-  return {
-    type: 'set-edit-mode',
-    value: value
-  };
-}
-
-export function change(prop, value) {
-  return {
-    type: 'change',
-    prop: prop,
-    value: value
-  };
-}
-
 function error(err) {
   return {
     type: 'error',
@@ -38,18 +25,25 @@ function error(err) {
   };
 }
 
-const realUpdateNote = debounce((getState, token, history, dispatch) => {
-  let note = getState().note.note;
-  return api.put('/api/note/' + note.id, token, note)
+const realUpdateNote = debounce((note, getState, history, dispatch) => {
+  let state = getState();
+  let token = state.login.token;
+  let data = {
+    title: note.title,
+    text: note.text
+  };
+  dispatch({ type: 'push-update' });
+  return api.put('/api/note/' + note.id, token, data)
     .then(data => {
-      dispatch(setNote(data));
+      dispatch({ type: 'pop-update' });
     })
     .catch(err => dispatch(error(err)));
 }, 500);
 
-export function updateNote(note, token, history) {
+export function updateNote(note, history) {
   return function(dispatch, getState) {
-    realUpdateNote(getState, token, history, dispatch);
+    dispatch({ type: 'dirty' });
+    realUpdateNote(note, getState, history, dispatch);
   };
 }
 

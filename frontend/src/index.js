@@ -4,7 +4,7 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 import ReduxThunk from 'redux-thunk';
 import 'whatwg-fetch';
 import cookies from 'js-cookie';

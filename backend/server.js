@@ -117,6 +117,14 @@ api.post('/api/notes', (req, resp) =>
     returning *`, req.body)
 );
 
+function delay(ms) {
+  return new Promise(function(accept, reject) {
+    setTimeout(function() {
+      accept(null);
+    }, ms);
+  });
+}
+
 api.put('/api/note/:id', (req, resp) =>
   db.one(`
     update note set

@@ -2,70 +2,39 @@ import React from 'react';
 import * as ReactRedux from 'react-redux';
 import * as actions from './Note.actions';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Form, TextField, TextArea } from '../form';
 
 class Note extends React.Component {
   componentDidMount() {
-    if (this.props.authToken) {
-      this.fetchNote(this.props.authToken);
-    }
+    let id = this.props.match.params.id;
+    this.props.fetchNote(id);
   }
-  id() {
-    return this.props.match.params.id;
-  }
-  fetchNote(token) {
-    this.props.fetchNote(this.id(), token);
-  }
-  createNote() {
-    let note = this.props.note;
-    this.props.createNote(note, this.props.authToken, this.props.history);
-  }
-  change(prop, value) {
-    this.props.change(prop, value);
-    setTimeout(() =>
-      this.props.updateNote(
-        this.props.note,
-        this.props.authToken,
-        this.props.history
-      )
-    );
+  updateNote(note) {
+    this.props.updateNote(note, this.props.history);
   }
   deleteNote() {
     this.props.deleteNote();
-    this.context.router.history.push('/');
+    this.props.history.push('/');
   }
   render() {
     let note = this.props.note;
-    let dirty = this.props.dirty;
+    let dirty = this.props.dirty || this.props.pendingCount > 0;
     return (
       <div className="note">
-        <a href="#" className="link pull-right" onClick={() => this.deleteNote()}>Delete</a>
+        <a href="#" className="pull-right" onClick={() => this.deleteNote()}>Delete</a>
         <Link className="link" to="/notes">Back</Link>
         {dirty ? <div className="dirty"></div> : null}
-        <input type="text"
-          placeholder="Title"
-          value={note.title}
-          onChange={event => this.change('title', event.target.value)}/>
-        <textarea
-          placeholder="Write some stuff"
-          value={note.text}
-          onChange={event => this.change('text', event.target.value)}></textarea>
+        <Form values={note} onChange={values => this.updateNote(values)}>
+          <TextField label="Title" propName="title"/>
+          <TextArea label="Write some stuff" propName="text"/>
+        </Form>
       </div>
     );
   }
 }
 
-Note.contextTypes = {
-  router: PropTypes.shape({
-    history: PropTypes.object.isRequired,
-  }),
-}
-
 const NoteContainer = ReactRedux.connect(
-  state => ({
-    authToken: state.login.token,
-    ...state.note
-  }),
+  state => state.note,
   actions
 )(Note);
 
