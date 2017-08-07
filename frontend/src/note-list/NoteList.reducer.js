@@ -1,19 +1,27 @@
 const INITIAL_STATE = {
   notes: [],
-  q: ''
+  q: '',
+  error: null
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
-  if (action.type === 'notes') {
-    return {
-      ...state,
-      notes: action.payload
-    };
-  } else if (action.type === 'change-q') {
-    return {
-      ...state,
-      q: action.value
-    };
+  switch (action.type) {
+    case 'notes':
+      return {
+        ...state,
+        notes: action.payload
+      };
+    case 'change-q':
+      return {
+        ...state,
+        q: action.value
+      };
+    case 'error':
+      return {
+        ...state,
+        error: action.error
+      }
+    default:
+      return state;
   }
-  return state;
 }

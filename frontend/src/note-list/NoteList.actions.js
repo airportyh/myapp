@@ -38,8 +38,8 @@ export function addNote(token, history) {
     };
     api.post('/api/notes', token, note)
       .then(data => {
-        history.push(`/note/${data.id}`);
         dispatch(newNote(data));
+        history.push(`/note/${data.id}`);
       })
       .catch(err => dispatch(error(err)));
   };
@@ -58,7 +58,7 @@ const realSearch = debounce((token, q, dispatch) =>
       dispatch(notes(data))
     })
     .catch(err => dispatch(error(err)))
-);
+, 250);
 
 export function search(q, token) {
   return function(dispatch) {

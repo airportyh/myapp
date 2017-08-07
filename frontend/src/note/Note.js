@@ -3,7 +3,6 @@ import * as ReactRedux from 'react-redux';
 import * as actions from './Note.actions';
 import { Link } from 'react-router-dom';
 import { Form, TextField, TextArea } from '../form';
-import cookies from 'js-cookie';
 
 class Note extends React.Component {
   componentDidMount() {

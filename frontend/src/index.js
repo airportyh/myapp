@@ -7,7 +7,7 @@ import * as ReactRedux from 'react-redux';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import ReduxThunk from 'redux-thunk';
 import 'whatwg-fetch';
-import cookies from 'js-cookie';
+import * as authToken from './auth-token';
 
 // Import components
 import LoginComponent from './login/Login';
@@ -33,12 +33,12 @@ const store = Redux.createStore(
 
 store.dispatch({
   type: 'login-token',
-  token: cookies.get('authToken')
+  token: authToken.get()
 });
 
 const ProtectRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
-    cookies.get('authToken') ? (
+    authToken.get() ? (
       <Component {...props}/>
     ) : (
       <Redirect to={{

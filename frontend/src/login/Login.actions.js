@@ -1,5 +1,5 @@
 import api from '../api';
-import cookies from 'js-cookie';
+import * as authToken from '../auth-token';
 
 function error(err) {
   return {
@@ -21,7 +21,7 @@ export function login(password, redirectTo, history) {
       password: password
     })
     .then(info => {
-      cookies.set('authToken', info.token);
+      authToken.set(info.token);
       dispatch(loginToken(info));
       history.push(redirectTo || '/');
     })
