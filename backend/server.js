@@ -78,7 +78,11 @@ api.get('/api/notes', (req, resp) =>
 );
 
 api.get('/api/notes/search', (req, resp) => {
-  console.log('q', req.query.q);
+  let offset = req.query.offset || 0;
+  let limit = req.query.limit || 50;
+  if (limit > 200) {
+    limit = 200;
+  }
   if (!req.query.q) {
     return db.any('select id, title from note order by modified_time desc');
   } else {
@@ -90,7 +94,9 @@ api.get('/api/notes/search', (req, resp) => {
       where
       	to_tsvector(title || ' ' || text) @@ to_tsquery($1)
       order by modified_time desc
-      `, `'${req.query.q}'`);
+      limit $2
+      offset $3
+      `, [`'${req.query.q}'`, limit, offset]);
   }
 });
 
