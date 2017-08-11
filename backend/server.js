@@ -83,22 +83,40 @@ api.get('/api/notes/search', (req, resp) => {
   if (limit > 200) {
     limit = 200;
   }
+  let q = req.query.q;
   if (!req.query.q) {
-    return db.any('select id, title from note order by modified_time desc');
+    return listAll(limit, offset);
   } else {
-    return db.any(`
-      select
-      	id, title
-      from
-      	note
-      where
-      	to_tsvector(title || ' ' || text) @@ to_tsquery($1)
-      order by modified_time desc
-      limit $2
-      offset $3
-      `, [`'${req.query.q}'`, limit, offset]);
+    return search(q, limit, offset);
   }
 });
+
+function listAll(limit, offset) {
+  return db.any(`
+    select
+      id, title
+    from
+      note
+    order by
+      modified_time desc
+    limit $1
+    offset $2
+  `, [limit, offset]);
+}
+
+function search(q, limit, offset) {
+  return db.any(`
+    select
+      id, title
+    from
+      note
+    where
+      to_tsvector(title || ' ' || text) @@ to_tsquery($1)
+    order by modified_time desc
+    limit $2
+    offset $3
+    `, [`'${q}'`, limit, offset]);
+}
 
 api.get('/api/note/:id', (req, resp) =>
   db.oneOrNone('select * from note where id = $1',

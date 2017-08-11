@@ -1,5 +1,6 @@
 import api from '../api';
 import debounce from 'lodash.debounce';
+import params from '../query-params';
 
 function error(err) {
   return {
@@ -15,14 +16,6 @@ function notes(data) {
   };
 }
 
-export function fetchNoteList(token) {
-  return function(dispatch) {
-    api.get('/api/notes', token)
-      .then(data => dispatch(notes(data)))
-      .catch(err => dispatch(error(err)));
-  };
-}
-
 function newNote(note) {
   return {
     type: 'new-note',
@@ -30,8 +23,10 @@ function newNote(note) {
   };
 }
 
-export function addNote(token, history) {
-  return function(dispatch) {
+export function addNote(history) {
+  return function(dispatch, getState) {
+    let state = getState();
+    let token = state.login.token;
     let note = {
       title: '',
       text: ''
@@ -52,16 +47,27 @@ export function changeQ(q) {
   };
 }
 
-const realSearch = debounce((token, q, dispatch) =>
-  api.get('/api/notes/search?q=' + escape(q), token)
-    .then(data => {
-      dispatch(notes(data))
-    })
+export function more(q, pageIndex, pageSize) {
+  return function(dispatch, getState) {
+    let state = getState();
+    let token = state.login.token;
+    let limit = ((pageIndex + 2) * pageSize) + 1;
+    realSearch(token, q, 0, limit, dispatch);
+    dispatch({ type: 'more' });
+  }
+}
+
+const realSearch = debounce((token, q, offset, limit, dispatch) =>
+  api.get('/api/notes/search?' + params({ q, offset, limit }), token)
+    .then(data => dispatch(notes(data)))
     .catch(err => dispatch(error(err)))
 , 250);
 
-export function search(q, token) {
-  return function(dispatch) {
-    realSearch(token, q, dispatch);
+export function search(q, pageIndex, pageSize) {
+  return function(dispatch, getState) {
+    let state = getState();
+    let token = state.login.token;
+    let limit = ((pageIndex + 1) * pageSize) + 1;
+    realSearch(token, q, 0, limit, dispatch);
   };
 }
