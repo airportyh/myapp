@@ -24,7 +24,13 @@ class NoteList extends React.Component {
     let hasMore = notes.length > numItems;
     if (hasMore) {
       notes = notes.slice(0, numItems);
-      maybeMore = <li><button onClick={() => this.more()}>More</button></li>;
+      maybeMore =
+        <li>
+          <button className="more"
+            onClick={() => this.more()}>
+            More
+          </button>
+        </li>;
     }
     let errorDisplay = this.props.error ?
       <div className="error">{this.props.error}</div> :

@@ -172,3 +172,13 @@ div.note textarea.note-text-field {
   border: 0px none;
   border-top: 1px solid #ccc;
 }
+
+/* More Button */
+
+button.more {
+  border: 0 none;
+  background-color: inherit;
+  color: inherit;
+  text-decoration: underline;
+  font-size: 1em;
+}
