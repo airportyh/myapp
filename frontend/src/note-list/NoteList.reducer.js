@@ -3,7 +3,7 @@ const INITIAL_STATE = {
   q: '',
   error: null,
   pageIndex: 0,
-  pageSize: 10
+  pageSize: 20
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
