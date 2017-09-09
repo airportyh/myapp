@@ -17,6 +17,9 @@ class NoteList extends React.Component {
   more() {
     this.props.more(this.props.q, this.props.pageIndex, this.props.pageSize);
   }
+  login() {
+    this.props.history.push('/login');
+  }
   render() {
     let notes = this.props.notes;
     let maybeMore;
@@ -41,7 +44,7 @@ class NoteList extends React.Component {
           <button className="add-button" onClick={() => this.addNote()}>
             +
           </button>
-          <h1>Notes</h1>
+          <h1 onClick={() => this.login()}>Notes</h1>
         </div>
         <input type="text" placeholder="Search"
           value={this.props.q}
