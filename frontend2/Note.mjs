@@ -5,42 +5,53 @@ import debounce from './debounce.mjs';
 export default function Note(id, nav) {
     let titleEl;
     let textareaEl;
+    let errorEl;
 
     async function load() {
         try {
+            clearError();
             const note = await api.get(`/api/note/${id}`);
 
             titleEl.value = note.title;
             textareaEl.value = note.text;
         } catch (e) {
-            console.error(`Failed to fetch note ${id}: ${e.message}`);
+            setError(`Failed to fetch note ${id}: ${e.message}`);
         }
     }
 
-    const updateNote = debounce(function() {
-        let data = {
-            title: titleEl.value,
-            text: textareaEl.value
-        };
-        api.put(`/api/note/${id}`, data)
-        .then(() => {
-            console.log(`Note ${id} updated`);
-        })
-        .catch((e) => {
-            console.error(`Failed to update note ${id}`);
-        });
+    const updateNote = debounce(async function() {
+        try {
+            clearError();
+            let data = {
+                title: titleEl.value,
+                text: textareaEl.value
+            };
+            await api.put(`/api/note/${id}`, data);
+        } catch (e) {
+            setError(`Failed to update note ${id}: ${e.message}`);
+        }
     }, 500);
 
     async function deleteNote(id) {
         try {
+            clearError();
             await api.delete(`/api/note/${id}`);
             nav.gotoNoteList();
         } catch (e) {
-            console.error(`Failed to delete note ${id}`);
+            setError(`Failed to delete note ${id}: ${e.message}`);
         }
     }
 
-    load();
+    function clearError() {
+        errorEl.textContent = '';
+    }
+
+    function setError(message) {
+        errorEl.textContent = message;
+        console.error(message);
+    }
+
+    setTimeout(load);
 
     return el.div(
         { class: 'note' },
@@ -59,6 +70,7 @@ export default function Note(id, nav) {
                 nav.gotoNoteList();
             }
         }, 'Back'),
+        errorEl = el.div({ class: 'error '}),
         el.form(
             { onSubmit: (e) => {
                 e.preventDefault();

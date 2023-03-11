@@ -184,7 +184,15 @@ const globalStyles = `
     color: inherit;
     text-decoration: underline;
     font-size: 1em;
-  }  
+  }
+  
+  .loading {
+    text-align: center;
+  }
+  .loading img {
+    width: 400px;
+    height: 300px;
+  }
 `;
 
 document.head.appendChild(el.style(globalStyles));

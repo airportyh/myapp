@@ -4,7 +4,8 @@ const el = (() => {
     const el = {};
     const elements = [
         'div', 'ul', 'li', 'ol', 'a', 'h1', 'h2', 'h3', 'h4', 'h5',
-        'style', 'textarea', 'form', 'input', 'label', 'button'
+        'style', 'textarea', 'form', 'input', 'label', 'button',
+        'img'
     ];
     for (let e of elements) {
         el[e] = curry(element, e);

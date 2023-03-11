@@ -1,14 +1,12 @@
 # Todo
 
 * new frontend
-    * search field
-    * error handling
     * history integration with navigator
-    * rich text editor
     * more button
-    * drawing editor
+    * rich text editor
 
-
+    * error handling (done)
+    * search field (done)
     * updating note (done)
     * add note (done)
     * deleting note (done)

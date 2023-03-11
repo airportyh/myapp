@@ -33,6 +33,31 @@ let api = {
       }
     });
   },
+  cancellableGet(path) {
+    const abortController = new AbortController();
+    const promise = fetch(`${baseURL}${path}`, {
+      headers: {
+        'Auth-Token': globalToken
+      },
+      signal: abortController.signal
+    })
+    .then(resp => {
+      if (resp.ok) {
+        return resp.json();
+      } else {
+        return resp.json()
+          .then(err => {
+            throw new Error(err.error)
+          });
+      }
+    });
+    return {
+      promise,
+      cancel: () => {
+        abortController.abort();
+      }
+    }
+  },
   post(path, data) {
     return fetch(`${baseURL}${path}`, {
       method: 'POST',
