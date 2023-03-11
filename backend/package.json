@@ -10,14 +10,14 @@
   "author": "Toby Ho",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^1.0.2",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.17.2",
     "co": "^4.6.0",
     "cors": "^2.8.3",
     "express": "^4.15.3",
     "fs-promise": "^2.0.3",
     "ip": "^1.1.5",
-    "pg-promise": "^5.9.0",
+    "pg-promise": "^11.3.0",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
