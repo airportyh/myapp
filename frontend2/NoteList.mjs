@@ -39,12 +39,24 @@ export default function NoteList(nav) {
 
     load();
 
+    async function addNote() {
+        try {
+            const reply = await api.post('/api/notes', {
+                title: '',
+                text: ''
+            });
+            nav.gotoNote(reply.id);
+        } catch (e) {
+            console.error(`Error adding note`);
+        }
+    }
+
     return el.div(
         el.div({ class: 'header' },
             el.button({
                 class: 'add-button',
                 onClick: () => {
-                    console.log('add note');
+                    addNote();
                 }
             }, '+'),
             el.h1('Notes')

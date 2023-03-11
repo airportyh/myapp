@@ -1,5 +1,15 @@
 # Todo
 
-* paging / more button
-* styling/experience for desktop
-* style login page
+* new frontend
+    * search field
+    * error handling
+    * history integration with navigator
+    * rich text editor
+    * more button
+    * drawing editor
+
+
+    * updating note (done)
+    * add note (done)
+    * deleting note (done)
+    

@@ -31,6 +31,15 @@ export default function Note(id, nav) {
         });
     }, 500);
 
+    async function deleteNote(id) {
+        try {
+            await api.delete(`/api/note/${id}`);
+            nav.gotoNoteList();
+        } catch (e) {
+            console.error(`Failed to delete note ${id}`);
+        }
+    }
+
     load();
 
     return el.div(
@@ -38,8 +47,10 @@ export default function Note(id, nav) {
         el.button({
             class: 'link pull-right',
             onClick: () => {
-                console.log('delete note');
-
+                const yes = confirm('Sure you want to delete?');
+                if (yes) {
+                    deleteNote(id);
+                }
             }
         }, 'Delete'),
         el.button({
